@@ -6,21 +6,21 @@ export class CreateRegisterDto {
     @MinLength(3)
     @MaxLength(30)
     @IsNotEmpty()
-    nombre: String;
+    nombre: string;
 
     @IsString()
     @MinLength(3)
     @MaxLength(30)
     @IsNotEmpty()
-    apellido: String;
+    apellido: string;
     
     @IsString()
     @MinLength(3)
     @MaxLength(30)
-    nombre_fantasia?: String;
+    nombre_fantasia?: string;
 
     @IsString()
     @IsNotEmpty()
-    telefono: String;
+    telefono: string;
 
 }

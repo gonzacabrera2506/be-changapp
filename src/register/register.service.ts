@@ -1,11 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRegisterDto } from './dto/create-register.dto';
 import { UpdateRegisterDto } from './dto/update-register.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Register } from './entities/register.entity';
+import { DataSource, Repository } from 'typeorm';
+import { handleError } from 'src/common/exceptions/exception-handler';
 
 @Injectable()
 export class RegisterService {
-  create(createRegisterDto: CreateRegisterDto) {
-    return 'This action adds a new register';
+
+  constructor(
+    @InjectRepository(Register)
+    private readonly registerRepository: Repository<Register>,
+    //private readonly datasource: DataSource
+  ) { }
+
+  async create(createRegisterDto: CreateRegisterDto) {
+    try {
+      const register = this.registerRepository.create(createRegisterDto);
+      await this.registerRepository.save(register);
+      return register;
+
+    } catch (error) {
+      handleError(error);
+    }
   }
 
   findAll() {

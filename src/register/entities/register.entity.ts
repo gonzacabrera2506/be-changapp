@@ -1,6 +1,6 @@
 import { AfterInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({name: 'account'})
 export class Register {
 
     @PrimaryGeneratedColumn()
