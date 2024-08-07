@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpCode, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateRegisterDto } from './dto/create-register.dto';
 import { UpdateRegisterDto } from './dto/update-register.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,16 +15,26 @@ export class RegisterService {
     //private readonly datasource: DataSource
   ) { }
 
+  @HttpCode(HttpStatus.CREATED)
   async create(createRegisterDto: CreateRegisterDto) {
+
     const { email } = createRegisterDto;
-    const existingEmail = await this.registerRepository.findOne({ where: { email } });
-    if (existingEmail) throw new BadRequestException('Email ya registrado');
+    await this.existingEmail(email);
 
     try {
       const register = this.registerRepository.create(createRegisterDto);
       await this.registerRepository.save(register);
-      return register;
+      return {};
 
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  async existingEmail(email: string) {
+    try {
+      const existingEmail = await this.registerRepository.findOne({ where: { email } });
+      if (existingEmail) throw new BadRequestException('Email ya registrado');
     } catch (error) {
       handleError(error);
     }

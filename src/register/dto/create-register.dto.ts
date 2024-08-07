@@ -17,7 +17,7 @@ export class CreateRegisterDto {
     @IsString()
     @MinLength(3)
     @MaxLength(30)
-    nombre_fantasia?: string;
+    nombre_fantasia: string;
 
     @IsString()
     @IsNotEmpty()
